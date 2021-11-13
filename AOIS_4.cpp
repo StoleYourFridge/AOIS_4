@@ -40,6 +40,7 @@ vector<pair<int, bool>> from_constituent_to_pair(vector<bool>&constituent)
 	}
 	return result;
 }
+
 pair<vector<vector<pair<int, bool>>>, vector<vector<pair<int, bool>>>> ODC_3_SDNF()
 {
 	vector<vector<bool>> data{ {0,0,0},{0,0,1},{0,1,0},{0,1,1},{1,0,0},{1,0,1},{1,1,0},{1,1,1} };
