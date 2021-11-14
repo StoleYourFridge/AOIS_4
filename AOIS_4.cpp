@@ -150,27 +150,27 @@ string SDNF_vector_pair_output (vector<vector<pair<int, bool>>>&sdnfprotatype)
 		for (int j = 0; j < sdnfprotatype[i].size(); j++)
 		{
 			if (sdnfprotatype[i][j].first == 0) {
-				if (sdnfprotatype[i][j].second == 0) output += '!a';
+				if (sdnfprotatype[i][j].second == 0) output += "!a";
 				else output += 'a';
 			}
 			else if (sdnfprotatype[i][j].first == 1)
 			{
-				if (sdnfprotatype[i][j].second == 0) output += '!b';
+				if (sdnfprotatype[i][j].second == 0) output += "!b";
 				else output += 'b';
 			}
 			else if (sdnfprotatype[i][j].first == 2)
 			{
-				if (sdnfprotatype[i][j].second == 0) output += '!c';
+				if (sdnfprotatype[i][j].second == 0) output += "!c";
 				else output += 'c';
 			}
 			else if (sdnfprotatype[i][j].first == 3)
 			{
-				if (sdnfprotatype[i][j].second == 0) output += '!d';
+				if (sdnfprotatype[i][j].second == 0) output += "!d";
 				else output += 'd';
 			}
 			else if (sdnfprotatype[i][j].first == 4)
 			{
-				if (sdnfprotatype[i][j].second == 0) output += '!e';
+				if (sdnfprotatype[i][j].second == 0) output += "!e";
 				else output += 'e';
 			}
 			if (j != sdnfprotatype[i].size() - 1) output += '*';
@@ -190,27 +190,27 @@ string SKNF_vector_pair_output(vector<vector<pair<int, bool>>>& sknfprotatype)
 		{
 			if (sknfprotatype[i][j].first == 0) {
 				if (sknfprotatype[i][j].second == 0) output += 'a';
-				else output += '!a';
+				else output += "!a";
 			}
 			else if (sknfprotatype[i][j].first == 1)
 			{
 				if (sknfprotatype[i][j].second == 0) output += 'b';
-				else output += '!b';
+				else output += "!b";
 			}
 			else if (sknfprotatype[i][j].first == 2)
 			{
 				if (sknfprotatype[i][j].second == 0) output += 'c';
-				else output += '!c';
+				else output += "!c";
 			}
 			else if (sknfprotatype[i][j].first == 3)
 			{
 				if (sknfprotatype[i][j].second == 0) output += 'd';
-				else output += '!d';
+				else output += "!d";
 			}
 			else if (sknfprotatype[i][j].first == 4)
 			{
 				if (sknfprotatype[i][j].second == 0) output += 'e';
-				else output += '!e';
+				else output += "!e";
 			}
 			if (j != sknfprotatype[i].size() - 1) output += '+';
 		}
@@ -237,7 +237,7 @@ void truthtable(vector<bool>& answerstofunction_one, vector<bool>& answerstofunc
 	}
 	cout << endl << "------------------------------------------" << endl;
 }
-void function_components_output_sdnf(vector<vector<pair<int, bool>>> sdnf_result, vector<vector<pair<int, bool>>> sdnf_shift)
+void function_components_output_sdnf(vector<vector<pair<int, bool>>>& sdnf_result, vector<vector<pair<int, bool>>>& sdnf_shift)
 {
 	const int max_size_of_implicant = 4, min_size_of_imlicant = 1, max_size_of_sdnf = 16;
 	int transistors = 0;
@@ -493,11 +493,35 @@ void first_task()
 	function_components_output_sdnf(result_implicants, shift_implicants);
 }
 
+void second_task()
+{
+	vector<vector<bool>> function_one  { {0,1,0,1}, {0,1,1,0}, {1,0,0,0}, {0,1,1,1}, {1,0,0,1} };
+	vector<vector<bool>> function_two  { {0,0,0,1}, {0,0,1,0}, {0,0,1,1}, {0,1,0,0}, {1,0,0,1} };
+	vector<vector<bool>> function_three{ {0,0,0,0}, {0,0,1,1}, {0,1,0,0}, {0,1,1,1}, {1,0,0,0} };
+	vector<vector<bool>> function_four { {0,0,0,0}, {0,0,1,0}, {0,1,0,0}, {0,1,1,0}, {1,0,0,0} };
+	cout << "y1(SDNF) : ";
+	SDNF_vector_bool_output(function_one);
+	cout << "y2(SDNF) : ";
+	SDNF_vector_bool_output(function_two);
+	cout << "y3(SDNF) : ";
+	SDNF_vector_bool_output(function_three);
+	cout << "y4(SDNF) : ";
+	SDNF_vector_bool_output(function_four);
+	vector<vector<pair<int, bool>>> minimized = minimization(function_one);
+	cout << "Minimized y1 : " << SDNF_vector_pair_output(minimized) << endl;
+	minimized = minimization(function_two);
+	cout << "Minimized y2 : " << SDNF_vector_pair_output(minimized) << endl;
+	minimized = minimization(function_three);
+	cout << "Minimized y3 : " << SDNF_vector_pair_output(minimized) << endl;
+	minimized = minimization(function_four);
+	cout << "Minimized y4 : " << SDNF_vector_pair_output(minimized) << endl;
+}
+
 int main()
 {
+	cout << "                      ::: First task ::: " << endl << endl;
 	first_task();
-	/*vector<vector<bool>> result_sdnf{ {0,0,0,0}, {0,1,0,0}, {0,1,0,1}, {0,1,1,1}, {0,0,1,0}, {1,1,1,1}, {1,1,1,0}, {1,0,0,0}, {1,0,0,1}, {1,0,1,0} };
-	vector<vector<pair<int, bool>>> result_implicants = minimization(result_sdnf);
-	SDNF_output(result_implicants);*/
+	cout << endl << "                      ::: Second task ::: " << endl << endl;
+	second_task();
     return 0;
 }
