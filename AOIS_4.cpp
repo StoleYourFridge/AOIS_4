@@ -141,81 +141,83 @@ void SKNF_vector_bool_output(vector<vector<bool>>& sknfprototype)
 	}
 	cout << endl;
 }
-void SDNF_vector_pair_output (vector<vector<pair<int, bool>>>&sdnfprotatype)
+string SDNF_vector_pair_output (vector<vector<pair<int, bool>>>&sdnfprotatype)
 {
+	string output;
 	for (int i = 0; i < sdnfprotatype.size(); i++)
 	{
-		cout << "(";
+		output += '(';
 		for (int j = 0; j < sdnfprotatype[i].size(); j++)
 		{
 			if (sdnfprotatype[i][j].first == 0) {
-				if (sdnfprotatype[i][j].second == 0) cout << "!a";
-				else cout << "a";
+				if (sdnfprotatype[i][j].second == 0) output += '!a';
+				else output += 'a';
 			}
 			else if (sdnfprotatype[i][j].first == 1)
 			{
-				if (sdnfprotatype[i][j].second == 0) cout << "!b";
-				else cout << "b";
+				if (sdnfprotatype[i][j].second == 0) output += '!b';
+				else output += 'b';
 			}
 			else if (sdnfprotatype[i][j].first == 2)
 			{
-				if (sdnfprotatype[i][j].second == 0) cout << "!c";
-				else cout << "c";
+				if (sdnfprotatype[i][j].second == 0) output += '!c';
+				else output += 'c';
 			}
 			else if (sdnfprotatype[i][j].first == 3)
 			{
-				if (sdnfprotatype[i][j].second == 0) cout << "!d";
-				else cout << "d";
+				if (sdnfprotatype[i][j].second == 0) output += '!d';
+				else output += 'd';
 			}
 			else if (sdnfprotatype[i][j].first == 4)
 			{
-				if (sdnfprotatype[i][j].second == 0) cout << "!e";
-				else cout << "e";
+				if (sdnfprotatype[i][j].second == 0) output += '!e';
+				else output += 'e';
 			}
-			if (j != sdnfprotatype[i].size() - 1) cout << "*";
+			if (j != sdnfprotatype[i].size() - 1) output += '*';
 		}
-		cout << ")";
-		if (i != sdnfprotatype.size() - 1) cout << "+";
+		output += ')';
+		if (i != sdnfprotatype.size() - 1) output += '+';
 	}
-	cout << endl;
+	return output;
 }
-void SKNF_vector_pair_output(vector<vector<pair<int, bool>>>& sknfprotatype)
+string SKNF_vector_pair_output(vector<vector<pair<int, bool>>>& sknfprotatype)
 {
+	string output;
 	for (int i = 0; i < sknfprotatype.size(); i++)
 	{
-		cout << "(";
+		output += '(';
 		for (int j = 0; j < sknfprotatype[i].size(); j++)
 		{
 			if (sknfprotatype[i][j].first == 0) {
-				if (sknfprotatype[i][j].second == 0) cout << "a";
-				else cout << "!a";
+				if (sknfprotatype[i][j].second == 0) output += 'a';
+				else output += '!a';
 			}
 			else if (sknfprotatype[i][j].first == 1)
 			{
-				if (sknfprotatype[i][j].second == 0) cout << "b";
-				else cout << "!b";
+				if (sknfprotatype[i][j].second == 0) output += 'b';
+				else output += '!b';
 			}
 			else if (sknfprotatype[i][j].first == 2)
 			{
-				if (sknfprotatype[i][j].second == 0) cout << "c";
-				else cout << "!c";
+				if (sknfprotatype[i][j].second == 0) output += 'c';
+				else output += '!c';
 			}
 			else if (sknfprotatype[i][j].first == 3)
 			{
-				if (sknfprotatype[i][j].second == 0) cout << "d";
-				else cout << "!d";
+				if (sknfprotatype[i][j].second == 0) output += 'd';
+				else output += '!d';
 			}
 			else if (sknfprotatype[i][j].first == 4)
 			{
-				if (sknfprotatype[i][j].second == 0) cout << "e";
-				else cout << "!e";
+				if (sknfprotatype[i][j].second == 0) output += 'e';
+				else output += '!e';
 			}
-			if (j != sknfprotatype[i].size() - 1) cout << "+";
+			if (j != sknfprotatype[i].size() - 1) output += '+';
 		}
-		cout << ")";
-		if (i != sknfprotatype.size() - 1) cout << "*";
+		output += ')';
+		if (i != sknfprotatype.size() - 1) output += '*';
 	}
-	cout << endl;
+	return output;
 }
 void truthtable(vector<bool>& answerstofunction_one, vector<bool>& answerstofunction_two)
 {
@@ -235,7 +237,49 @@ void truthtable(vector<bool>& answerstofunction_one, vector<bool>& answerstofunc
 	}
 	cout << endl << "------------------------------------------" << endl;
 }
-
+void function_components_output_sdnf(vector<vector<pair<int, bool>>> sdnf_result, vector<vector<pair<int, bool>>> sdnf_shift)
+{
+	const int max_size_of_implicant = 4, min_size_of_imlicant = 1, max_size_of_sdnf = 16;
+	int transistors = 0;
+	map<int, bool> deny_counter;
+	map<int, int> and_counter;
+	map<int, int> or_counter;
+	or_counter[sdnf_result.size()]++;
+	or_counter[sdnf_shift.size()]++;
+ 	for (int i = 0; i < sdnf_result.size(); i++)
+	{
+		and_counter[sdnf_result[i].size()]++;
+		for (int j = 0; j < sdnf_result[i].size(); j++)
+		{
+			if (!sdnf_result[i][j].second) deny_counter[sdnf_result[i][j].first] = true;
+		}
+	}
+	for (int i = 0; i < sdnf_shift.size(); i++)
+	{
+		and_counter[sdnf_shift[i].size()]++;
+		for (int j = 0; j < sdnf_shift[i].size(); j++)
+		{
+			if (!sdnf_shift[i][j].second) deny_counter[sdnf_shift[i][j].first] = true;
+		}
+	}
+	cout << "There are : " << endl << deny_counter.size() << " NO schemes" << endl;
+	transistors += deny_counter.size();
+	for (int i = min_size_of_imlicant; i < max_size_of_implicant; i++)
+	{
+		if (and_counter[i] != 0) {
+			cout << and_counter[i] << " AND schemes with " << i << " inputs" << endl;
+			transistors += (and_counter[i] * i);
+		}
+	}
+	for (int i = 0; i < max_size_of_sdnf; i++)
+	{
+		if (or_counter[i] != 0) {
+			cout << or_counter[i] << " OR  schemes with " << i << " inputs" << endl;
+			transistors += (or_counter[i] * i);
+		}
+	}
+	cout << "Total transistors : " << transistors << endl;
+}
 
 bool checker_for_coincidence(vector<pair<int, bool>>& term_one, vector<pair<int, bool>> & term_two, int size)
 {
@@ -444,10 +488,9 @@ void first_task()
 	SDNF_vector_bool_output(shift_sdnf);
 	vector<vector<pair<int, bool>>> result_implicants = minimization(result_sdnf);
 	vector<vector<pair<int, bool>>> shift_implicants = minimization(shift_sdnf);
-	cout << "Minimized (bi+1)(SDNF) = ";
-	SDNF_vector_pair_output(result_implicants);
-	cout << "Minimized (di)(SDNF)   = ";
-	SDNF_vector_pair_output(shift_implicants);
+	cout << "Minimized (bi+1)(SDNF) = " << SDNF_vector_pair_output(result_implicants) << endl;
+	cout << "Minimized (di)(SDNF)   = " << SDNF_vector_pair_output(shift_implicants) << endl;
+	function_components_output_sdnf(result_implicants, shift_implicants);
 }
 
 int main()
