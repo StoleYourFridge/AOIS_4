@@ -1,8 +1,4 @@
-﻿#include <iostream>
-#include <vector>
-#include <map>
-
-using namespace std;
+﻿#include "AOIS_4.h"
 
 pair<bool, bool> summary_machine(vector<bool>& constituent)
 {
@@ -492,7 +488,6 @@ void first_task()
 	cout << "Minimized (di)(SDNF)   = " << SDNF_vector_pair_output(shift_implicants) << endl;
 	function_components_output_sdnf(result_implicants, shift_implicants);
 }
-
 void second_task()
 {
 	vector<vector<bool>> function_one  { {0,1,0,1}, {0,1,1,0}, {1,0,0,0}, {0,1,1,1}, {1,0,0,1} };
@@ -515,13 +510,4 @@ void second_task()
 	cout << "Minimized y3 : " << SDNF_vector_pair_output(minimized) << endl;
 	minimized = minimization(function_four);
 	cout << "Minimized y4 : " << SDNF_vector_pair_output(minimized) << endl;
-}
-
-int main()
-{
-	cout << "                      ::: First task ::: " << endl << endl;
-	first_task();
-	cout << endl << "                      ::: Second task ::: " << endl << endl;
-	second_task();
-    return 0;
 }
