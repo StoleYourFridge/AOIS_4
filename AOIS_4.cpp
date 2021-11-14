@@ -49,24 +49,100 @@ vector<vector<pair<int, bool>>> from_set_of_constituents_to_implicants(vector<ve
 	}
 	return result;
 }
-pair<vector<vector<bool>>, vector<vector<bool>>> ODC_3_SDNF()
+pair<vector<vector<bool>>, vector<vector<bool>>> ODC_3_SDNF(vector<bool>& result_answers, vector<bool>& shift_answers)
 {
 	vector<vector<bool>> data{ {0,0,0},{0,0,1},{0,1,0},{0,1,1},{1,0,0},{1,0,1},{1,1,0},{1,1,1} };
 	vector<vector<bool>> result_of_function_sdnf, result_shift_sdnf;
 	for (int i = 0; i < data.size(); i++)
 	{
 		pair<bool, bool> example = summary_machine(data[i]);
-		if (example.first == 1) result_of_function_sdnf.push_back(data[i]);
-		if (example.second == 1) result_shift_sdnf.push_back(data[i]);
+		if (example.first == 1) {
+			result_of_function_sdnf.push_back(data[i]);
+			result_answers.push_back(1);
+		}
+		else result_answers.push_back(0);
+		if (example.second == 1) {
+			result_shift_sdnf.push_back(data[i]);
+			shift_answers.push_back(1);
+		}
+		else shift_answers.push_back(0);
 	}
 	pair<vector<vector<bool>>, vector<vector<bool>>> output(result_of_function_sdnf, result_shift_sdnf);
 	return output;
 }
 
-void SDNF_output (vector<vector<pair<int, bool>>>&sdnfprotatype)
+void SDNF_vector_bool_output(vector<vector<bool>>& sdnfprototype)
 {
-	string output;
-	cout << "F(sdnf)(a,b,c) = ";
+	if (sdnfprototype.size() == 0) return;
+	for (int i = 0; i < sdnfprototype.size(); i++)
+	{
+		cout << "(";
+		for (int j = 0; j < sdnfprototype[i].size(); j++)
+		{
+			if (j == 0) {
+				if (sdnfprototype[i][j] == 1) cout << "a";
+				else cout << "!a";
+			}
+			if (j == 1) {
+				if (sdnfprototype[i][j] == 1) cout << "b";
+				else cout << "!b";
+			}
+			if (j == 2) {
+				if (sdnfprototype[i][j] == 1) cout << "c";
+				else cout << "!c";
+			}
+			if (j == 3) {
+				if (sdnfprototype[i][j] == 1) cout << "d";
+				else cout << "!d";
+			}
+			if (j == 4) {
+				if (sdnfprototype[i][j] == 1) cout << "e";
+				else cout << "!e";
+			}
+			if (j != sdnfprototype[i].size() - 1) cout << "*"; 
+		}
+		cout << ")";
+		if (i != sdnfprototype.size() - 1) cout << "+";
+	}
+	cout << endl;
+}
+void SKNF_vector_bool_output(vector<vector<bool>>& sknfprototype)
+{
+	if (sknfprototype.size() == 0) return;
+	for (int i = 0; i < sknfprototype.size(); i++)
+	{
+		cout << "(";
+		for (int j = 0; j < sknfprototype[i].size(); j++)
+		{
+			if (j == 0) {
+				if (sknfprototype[i][j] == 1) cout << "!a";
+				else cout << "a";
+			}
+			if (j == 1) {
+				if (sknfprototype[i][j] == 1) cout << "!b";
+				else cout << "b";
+			}
+			if (j == 2) {
+				if (sknfprototype[i][j] == 1) cout << "!c";
+				else cout << "c";
+			}
+			if (j == 3) {
+				if (sknfprototype[i][j] == 1) cout << "!d";
+				else cout << "d";
+			}
+			if (j == 4) {
+				if (sknfprototype[i][j] == 1) cout << "!e";
+				else cout << "e";
+			}
+			if (j != sknfprototype[i].size() - 1) cout << "+";
+		}
+		cout << ")";
+		if (i != sknfprototype.size() - 1) cout << "*";
+	}
+	cout << endl;
+}
+void SDNF_vector_pair_output (vector<vector<pair<int, bool>>>&sdnfprotatype)
+{
 	for (int i = 0; i < sdnfprotatype.size(); i++)
 	{
 		cout << "(";
@@ -103,9 +179,8 @@ void SDNF_output (vector<vector<pair<int, bool>>>&sdnfprotatype)
 	}
 	cout << endl;
 }
-void SKNF_output(vector<vector<pair<int, bool>>>& sknfprotatype)
+void SKNF_vector_pair_output(vector<vector<pair<int, bool>>>& sknfprotatype)
 {
-	cout << "F(sdnf)(a,b,c) = ";
 	for (int i = 0; i < sknfprotatype.size(); i++)
 	{
 		cout << "(";
@@ -142,6 +217,25 @@ void SKNF_output(vector<vector<pair<int, bool>>>& sknfprotatype)
 	}
 	cout << endl;
 }
+void truthtable(vector<bool>& answerstofunction_one, vector<bool>& answerstofunction_two)
+{
+	cout << "Truth table : " << endl << "------------------------------------------" << endl
+		<< "a      : | 0 | 0 | 0 | 0 | 1 | 1 | 1 | 1 |" << endl
+		<< "b      : | 0 | 0 | 1 | 1 | 0 | 0 | 1 | 1 |" << endl
+		<< "c      : | 0 | 1 | 0 | 1 | 0 | 1 | 0 | 1 |" << endl
+		<< "------------------------------------------" << endl << "result : |";
+	for (int i = 0; i < answerstofunction_one.size(); i++)
+	{
+		cout << " " << answerstofunction_one[i] << " |";
+	}
+	cout << endl << "shift  : |";
+	for (int i = 0; i < answerstofunction_two.size(); i++)
+	{
+		cout << " " << answerstofunction_two[i] << " |";
+	}
+	cout << endl << "------------------------------------------" << endl;
+}
+
 
 bool checker_for_coincidence(vector<pair<int, bool>>& term_one, vector<pair<int, bool>> & term_two, int size)
 {
@@ -340,18 +434,27 @@ vector<vector<pair<int, bool>>> minimization(vector<vector<bool>>& sdnfprotatype
 
 void first_task()
 {
-	pair<vector<vector<bool>>, vector<vector<bool>>> odc_3_output = ODC_3_SDNF();
+	vector<bool> result_answers, shift_answers;
+	pair<vector<vector<bool>>, vector<vector<bool>>> odc_3_output = ODC_3_SDNF(result_answers, shift_answers);
+	truthtable(result_answers, shift_answers);
 	vector<vector<bool>> result_sdnf = odc_3_output.first, shift_sdnf = odc_3_output.second;
+	cout << "F(bi+1)(SDNF)(a,b,c)   = ";
+	SDNF_vector_bool_output(result_sdnf);
+	cout << "F(di)(SDNF)(a,b,c)     = ";
+	SDNF_vector_bool_output(shift_sdnf);
 	vector<vector<pair<int, bool>>> result_implicants = minimization(result_sdnf);
 	vector<vector<pair<int, bool>>> shift_implicants = minimization(shift_sdnf);
-
+	cout << "Minimized (bi+1)(SDNF) = ";
+	SDNF_vector_pair_output(result_implicants);
+	cout << "Minimized (di)(SDNF)   = ";
+	SDNF_vector_pair_output(shift_implicants);
 }
 
 int main()
 {
-	//first_task();
-	vector<vector<bool>> result_sdnf{ {0,0,0,0}, {0,1,0,0}, {0,1,0,1}, {0,1,1,1}, {0,0,1,0}, {1,1,1,1}, {1,1,1,0}, {1,0,0,0}, {1,0,0,1}, {1,0,1,0} };
+	first_task();
+	/*vector<vector<bool>> result_sdnf{ {0,0,0,0}, {0,1,0,0}, {0,1,0,1}, {0,1,1,1}, {0,0,1,0}, {1,1,1,1}, {1,1,1,0}, {1,0,0,0}, {1,0,0,1}, {1,0,1,0} };
 	vector<vector<pair<int, bool>>> result_implicants = minimization(result_sdnf);
-	SDNF_output(result_implicants);
+	SDNF_output(result_implicants);*/
     return 0;
 }
