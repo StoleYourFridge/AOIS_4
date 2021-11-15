@@ -33,3 +33,17 @@ vector<vector<pair<int, bool>>> minimization(vector<vector<bool>>& sdnfprotatype
 
 void first_task();
 void second_task();
+bool Test1();
+bool Test2();
+bool Test3();
+bool Test4();
+bool Test5();
+bool Test6();
+bool Test7();
+bool Test8();
+bool Test9();
+bool Test10();
+bool Test11();
+bool Test12();
+void tests();
+void Lab_tasks();

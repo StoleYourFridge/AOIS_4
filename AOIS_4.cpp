@@ -511,3 +511,196 @@ void second_task()
 	minimized = minimization(function_four);
 	cout << "Minimized y4 : " << SDNF_vector_pair_output(minimized) << endl;
 }
+
+bool Test1()
+{
+	vector<vector<bool>> sdnfprotatype{ {0,0,0}, {0,1,0}, {1,0,0}, {1,1,0} };
+	vector<vector<pair<int, bool>>> minimization_result = minimization(sdnfprotatype);
+	string our_result = SDNF_vector_pair_output(minimization_result);
+	string real_result = "(!c)";
+	if (our_result == real_result)
+	{
+		cout << "Test1 correct!" << endl;
+		return true;
+	}
+	else cout << "Test1 incorrect!" << endl;
+	return false;
+}
+bool Test2()
+{
+	vector<vector<bool>> sdnfprotatype{ {0,0,1}, {0,1,1}, {1,0,1}, {1,1,1} };
+	vector<vector<pair<int, bool>>> minimization_result = minimization(sdnfprotatype);
+	string our_result = SDNF_vector_pair_output(minimization_result);
+	string real_result = "(c)";
+	if (our_result == real_result)
+	{
+		cout << "Test2 correct!" << endl;
+		return true;
+	}
+	else cout << "Test2 incorrect!" << endl;
+	return false;
+}
+bool Test3()
+{
+	vector<vector<bool>> sdnfprotatype{ {0,0,0}, {1,0,1}, {0,1,1}, {1,1,0} };
+	vector<vector<pair<int, bool>>> minimization_result = minimization(sdnfprotatype);
+	string our_result = SDNF_vector_pair_output(minimization_result);
+	string real_result = "(!a*!b*!c)+(a*!b*c)+(!a*b*c)+(a*b*!c)";
+	if (our_result == real_result)
+	{
+		cout << "Test3 correct!" << endl;
+		return true;
+	}
+	else cout << "Test3 incorrect!" << endl;
+	return false;
+}
+bool Test4()
+{
+	vector<vector<bool>> sdnfprotatype{ {1,0,0}, {1,0,1}, {1,1,0}, {1,1,1} };
+	vector<vector<pair<int, bool>>> minimization_result = minimization(sdnfprotatype);
+	string our_result = SDNF_vector_pair_output(minimization_result);
+	string real_result = "(a)";
+	if (our_result == real_result)
+	{
+		cout << "Test4 correct!" << endl;
+		return true;
+	}
+	else cout << "Test4 incorrect!" << endl;
+	return false;
+}
+bool Test5()
+{
+	vector<vector<bool>> sdnfprotatype{ {0,0,0}, {0,0,1}, {0,1,1}, {1,0,0}, {1,1,0}, {1,1,1} };
+	vector<vector<pair<int, bool>>> minimization_result = minimization(sdnfprotatype);
+	string our_result = SDNF_vector_pair_output(minimization_result);
+	string real_result = "(!b*!c)+(!a*c)+(a*b)";
+	if (our_result == real_result)
+	{
+		cout << "Test5 correct!" << endl;
+		return true;
+	}
+	else cout << "Test5 incorrect!" << endl;
+	return false;
+}
+bool Test6()
+{
+	vector<vector<bool>> sdnfprotatype{ {0,0,0}, {0,1,0}, {0,1,1}, {1,0,0}, {1,0,1}, {1,1,1} };
+	vector<vector<pair<int, bool>>> minimization_result = minimization(sdnfprotatype);
+	string our_result = SDNF_vector_pair_output(minimization_result);
+	string real_result = "(!b*!c)+(!a*b)+(a*c)";
+	if (our_result == real_result)
+	{
+		cout << "Test6 correct!" << endl;
+		return true;
+	}
+	else cout << "Test6 incorrect!" << endl;
+	return false;
+}
+bool Test7()
+{
+	vector<vector<bool>> sdnfprotatype{ {0,0,0,0}, {0,0,1,0}, {0,1,0,0}, {0,1,1,0}, {1,0,0,0}, {1,0,1,0}, {1,1,0,0}, {1,1,1,0} };
+	vector<vector<pair<int, bool>>> minimization_result = minimization(sdnfprotatype);
+	string our_result = SDNF_vector_pair_output(minimization_result);
+	string real_result = "(!d)";
+	if (our_result == real_result)
+	{
+		cout << "Test7 correct!" << endl;
+		return true;
+	}
+	else cout << "Test7 incorrect!" << endl;
+	return false;
+}
+bool Test8()
+{
+	vector<vector<bool>> sdnfprotatype{ {0,0,0,1}, {0,0,1,1}, {0,1,0,1}, {0,1,1,1}, {1,0,0,1}, {1,0,1,1}, {1,1,0,1}, {1,1,1,1} };
+	vector<vector<pair<int, bool>>> minimization_result = minimization(sdnfprotatype);
+	string our_result = SDNF_vector_pair_output(minimization_result);
+	string real_result = "(d)";
+	if (our_result == real_result)
+	{
+		cout << "Test8 correct!" << endl;
+		return true;
+	}
+	else cout << "Test8 incorrect!" << endl;
+	return false;
+}
+bool Test9()
+{
+	vector<vector<bool>> sdnfprotatype{ {0,0,0,0}, {0,0,0,1}, {0,0,1,0}, {0,0,1,1}, {0,1,0,0}, {1,0,1,1}, {1,1,0,0}, {1,1,0,1}, {1,1,1,0}, {1,1,1,1} };
+	vector<vector<pair<int, bool>>> minimization_result = minimization(sdnfprotatype);
+	string our_result = SDNF_vector_pair_output(minimization_result);
+	string real_result = "(!a*!b)+(b*!c*!d)+(a*c*d)+(a*b)";
+	if (our_result == real_result)
+	{
+		cout << "Test9 correct!" << endl;
+		return true;
+	}
+	else cout << "Test9 incorrect!" << endl;
+	return false;
+}
+bool Test10()
+{
+	vector<vector<bool>> sdnfprotatype{ {0,1,0,0}, {0,1,0,1}, {0,1,1,0}, {0,1,1,1}, {1,0,0,0}, {1,0,0,1}, {1,0,1,0}, {1,0,1,1} };
+	vector<vector<pair<int, bool>>> minimization_result = minimization(sdnfprotatype);
+	string our_result = SDNF_vector_pair_output(minimization_result);
+	string real_result = "(!a*b)+(a*!b)";
+	if (our_result == real_result)
+	{
+		cout << "Test10 correct!" << endl;
+		return true;
+	}
+	else cout << "Test10 incorrect!" << endl;
+	return false;
+}
+bool Test11()
+{
+	vector<vector<bool>> sdnfprotatype{ {0,0,0,0}, {0,1,0,0}, {1,1,0,1}, {1,0,0,1}, {0,0,1,1}, {0,1,1,1}, {1,1,1,0}, {1,0,1,0} };
+	vector<vector<pair<int, bool>>> minimization_result = minimization(sdnfprotatype);
+	string our_result = SDNF_vector_pair_output(minimization_result);
+	string real_result = "(!a*!c*!d)+(a*!c*d)+(!a*c*d)+(a*c*!d)";
+	if (our_result == real_result)
+	{
+		cout << "Test11 correct!" << endl;
+		return true;
+	}
+	else cout << "Test11 incorrect!" << endl;
+	return false;
+}
+bool Test12()
+{
+	vector<vector<bool>> sdnfprotatype{ {0,0,0,0}, {1,0,0,0}, {0,1,0,1}, {1,1,0,1}, {0,1,1,1}, {1,1,1,1}, {0,0,1,0}, {1,0,1,0} };
+	vector<vector<pair<int, bool>>> minimization_result = minimization(sdnfprotatype);
+	string our_result = SDNF_vector_pair_output(minimization_result);
+	string real_result = "(!b*!d)+(b*d)";
+	if (our_result == real_result)
+	{
+		cout << "Test12 correct!" << endl;
+		return true;
+	}
+	else cout << "Test12 incorrect!" << endl;
+	return false;
+}
+void tests()
+{
+	int correct_counter = 0;
+	correct_counter += Test1();
+	correct_counter += Test2();
+	correct_counter += Test3();
+	correct_counter += Test4();
+	correct_counter += Test5();
+	correct_counter += Test6();
+	correct_counter += Test7();
+	correct_counter += Test8();
+	correct_counter += Test9();
+	correct_counter += Test10();
+	correct_counter += Test11();
+	correct_counter += Test12();
+	if (correct_counter == 12) cout << "All tests passed correctly!" << endl;
+}
+void Lab_tasks()
+{
+	cout << "                      ::: First task ::: " << endl << endl;
+	first_task();
+	cout << endl << "                      ::: Second task ::: " << endl << endl;
+	second_task();
+}
