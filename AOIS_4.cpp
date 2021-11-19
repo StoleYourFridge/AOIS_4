@@ -45,23 +45,23 @@ vector<vector<pair<int, bool>>> from_set_of_constituents_to_implicants(vector<ve
 	}
 	return result;
 }
-pair<vector<vector<bool>>, vector<vector<bool>>> ODC_3_SDNF(vector<bool>& result_answers, vector<bool>& shift_answers)
+pair<vector<vector<bool>>, vector<vector<bool>>> ODC_3_SDNF(vector<bool>& result_answers, vector<bool>& shift_answers, bool is_it_sdnf)
 {
 	vector<vector<bool>> data{ {0,0,0},{0,0,1},{0,1,0},{0,1,1},{1,0,0},{1,0,1},{1,1,0},{1,1,1} };
 	vector<vector<bool>> result_of_function_sdnf, result_shift_sdnf;
 	for (int i = 0; i < data.size(); i++)
 	{
 		pair<bool, bool> example = summary_machine(data[i]);
-		if (example.first == 1) {
+		if (example.first == is_it_sdnf) {
 			result_of_function_sdnf.push_back(data[i]);
-			result_answers.push_back(1);
+			result_answers.push_back(is_it_sdnf);
 		}
-		else result_answers.push_back(0);
-		if (example.second == 1) {
+		else result_answers.push_back(!is_it_sdnf);
+		if (example.second == is_it_sdnf) {
 			result_shift_sdnf.push_back(data[i]);
-			shift_answers.push_back(1);
+			shift_answers.push_back(is_it_sdnf);
 		}
-		else shift_answers.push_back(0);
+		else shift_answers.push_back(!is_it_sdnf);
 	}
 	pair<vector<vector<bool>>, vector<vector<bool>>> output(result_of_function_sdnf, result_shift_sdnf);
 	return output;
@@ -276,6 +276,49 @@ void function_components_output_sdnf(vector<vector<pair<int, bool>>>& sdnf_resul
 	}
 	cout << "Total transistors : " << transistors << endl;
 }
+void function_components_output_sknf(vector<vector<pair<int, bool>>>& sdnf_result, vector<vector<pair<int, bool>>>& sdnf_shift)
+{
+	const int max_size_of_implicant = 4, min_size_of_imlicant = 1, max_size_of_sknf = 16;
+	int transistors = 0;
+	map<int, bool> deny_counter;
+	map<int, int> and_counter;
+	map<int, int> or_counter;
+	and_counter[sdnf_result.size()]++;
+	and_counter[sdnf_shift.size()]++;
+	for (int i = 0; i < sdnf_result.size(); i++)
+	{
+		or_counter[sdnf_result[i].size()]++;
+		for (int j = 0; j < sdnf_result[i].size(); j++)
+		{
+			if (sdnf_result[i][j].second) deny_counter[sdnf_result[i][j].first] = true;
+		}
+	}
+	for (int i = 0; i < sdnf_shift.size(); i++)
+	{
+		or_counter[sdnf_shift[i].size()]++;
+		for (int j = 0; j < sdnf_shift[i].size(); j++)
+		{
+			if (sdnf_shift[i][j].second) deny_counter[sdnf_shift[i][j].first] = true;
+		}
+	}
+	cout << "There are : " << endl << deny_counter.size() << " NO schemes" << endl;
+	transistors += deny_counter.size();
+	for (int i = 0; i < max_size_of_sknf; i++)
+	{
+		if (and_counter[i] != 0) {
+			cout << and_counter[i] << " AND schemes with " << i << " inputs" << endl;
+			transistors += (and_counter[i] * i);
+		}
+	}
+	for (int i = min_size_of_imlicant; i < max_size_of_implicant; i++)
+	{
+		if (or_counter[i] != 0) {
+			cout << or_counter[i] << " OR  schemes with " << i << " inputs" << endl;
+			transistors += (or_counter[i] * i);
+		}
+	}
+	cout << "Total transistors : " << transistors << endl;
+}
 
 bool checker_for_coincidence(vector<pair<int, bool>>& term_one, vector<pair<int, bool>> & term_two, int size)
 {
@@ -472,21 +515,38 @@ vector<vector<pair<int, bool>>> minimization(vector<vector<bool>>& sdnfprotatype
 	return result_implicants;
 }
 
-void first_task()
+void first_task(bool is_it_sdnf)
 {
 	vector<bool> result_answers, shift_answers;
-	pair<vector<vector<bool>>, vector<vector<bool>>> odc_3_output = ODC_3_SDNF(result_answers, shift_answers);
+	pair<vector<vector<bool>>, vector<vector<bool>>> odc_3_output = ODC_3_SDNF(result_answers, shift_answers, is_it_sdnf);
 	truthtable(result_answers, shift_answers);
 	vector<vector<bool>> result_sdnf = odc_3_output.first, shift_sdnf = odc_3_output.second;
-	cout << "F(bi+1)(SDNF)(a,b,c)   = ";
-	SDNF_vector_bool_output(result_sdnf);
-	cout << "F(di)(SDNF)(a,b,c)     = ";
-	SDNF_vector_bool_output(shift_sdnf);
+	if (is_it_sdnf) {
+		cout << "F(bi+1)(SDNF)(a,b,c)   = ";
+		SDNF_vector_bool_output(result_sdnf);
+		cout << "F(di)(SDNF)(a,b,c)     = ";
+		SDNF_vector_bool_output(shift_sdnf);
+	}
+	else {
+		cout << "F(bi+1)(SKNF)(a,b,c)   = ";
+		SKNF_vector_bool_output(result_sdnf);
+		cout << "F(di)(SKNF)(a,b,c)     = ";
+		SKNF_vector_bool_output(shift_sdnf);
+	}
 	vector<vector<pair<int, bool>>> result_implicants = minimization(result_sdnf);
 	vector<vector<pair<int, bool>>> shift_implicants = minimization(shift_sdnf);
-	cout << "Minimized (bi+1)(SDNF) = " << SDNF_vector_pair_output(result_implicants) << endl;
-	cout << "Minimized (di)(SDNF)   = " << SDNF_vector_pair_output(shift_implicants) << endl;
-	function_components_output_sdnf(result_implicants, shift_implicants);
+	if (is_it_sdnf) {
+		cout << "Minimized (bi+1)(SDNF) = " << SDNF_vector_pair_output(result_implicants) << endl;
+		cout << "Minimized (di)(SDNF)   = " << SDNF_vector_pair_output(shift_implicants) << endl;
+	}
+	else {
+		cout << "Minimized (bi+1)(SKNF) = " << SKNF_vector_pair_output(result_implicants) << endl;
+		cout << "Minimized (di)(SKNF)   = " << SKNF_vector_pair_output(shift_implicants) << endl;
+	}	
+	if (is_it_sdnf) {
+		function_components_output_sdnf(result_implicants, shift_implicants);
+	}
+	else function_components_output_sknf(result_implicants, shift_implicants);
 }
 void second_task()
 {
@@ -700,7 +760,20 @@ void tests()
 void Lab_tasks()
 {
 	cout << "                      ::: First task ::: " << endl << endl;
-	first_task();
+	int choice;
+	cout << "What type of output do you wannt to see? :: 1)SDNF   ::  2)SKNF" << endl;
+	cin >> choice;
+	switch (choice)
+	{
+	case 1:
+		first_task(true);
+		break;
+	case 2:
+		first_task(false);
+		break;
+	default: cout << "Enter something posible to work with!!" << endl;
+		return;
+	}
 	cout << endl << "                      ::: Second task ::: " << endl << endl;
 	second_task();
 }
