@@ -550,10 +550,10 @@ void first_task(bool is_it_sdnf)
 }
 void second_task()
 {
-	vector<vector<bool>> function_one  { {0,1,0,1}, {0,1,1,0}, {1,0,0,0}, {0,1,1,1}, {1,0,0,1} };
-	vector<vector<bool>> function_two  { {0,0,0,1}, {0,0,1,0}, {0,0,1,1}, {0,1,0,0}, {1,0,0,1} };
-	vector<vector<bool>> function_three{ {0,0,0,0}, {0,0,1,1}, {0,1,0,0}, {0,1,1,1}, {1,0,0,0} };
-	vector<vector<bool>> function_four { {0,0,0,0}, {0,0,1,0}, {0,1,0,0}, {0,1,1,0}, {1,0,0,0} };
+	vector<vector<bool>> function_one  { {0,0,1,1}, {0,1,0,0} };
+	vector<vector<bool>> function_two  { {0,0,0,0}, {0,0,0,1}, {0,0,1,0} };
+	vector<vector<bool>> function_three{ {0,0,0,1}, {0,0,1,0}, };
+	vector<vector<bool>> function_four { {0,0,0,0}, {0,0,1,0}, {0,1,0,0} };
 	cout << "y1(SDNF) : ";
 	SDNF_vector_bool_output(function_one);
 	cout << "y2(SDNF) : ";
@@ -761,7 +761,7 @@ void Lab_tasks()
 {
 	cout << "                      ::: First task ::: " << endl << endl;
 	int choice;
-	cout << "What type of output do you wannt to see? :: 1)SDNF   ::  2)SKNF" << endl;
+	cout << "What type of output do you want to see? :: 1)SDNF   ::  2)SKNF" << endl;
 	cin >> choice;
 	switch (choice)
 	{
